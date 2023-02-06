@@ -1,0 +1,27 @@
+{
+  "conversations": [
+    {
+      "host": "localhost:7480",
+      "auth": {
+        "access_key": "test",
+        "secret_key": "test"
+      },
+      "requests": [
+        {
+          "auth": "aws_v2",
+          "method": "PUT",
+          "uri": "admin/user",
+          "query_string": "format=json&uid=olu&display-name=olu&access-key=olu&secret-key=olu",
+          "response": {
+            "on_end": {
+              "function": "on_res_check_code_200",
+              "args": [
+                "create-user"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

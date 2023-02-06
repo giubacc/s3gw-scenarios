@@ -1,0 +1,153 @@
+{
+  "conversations": [
+    {
+      "host": "localhost:7480",
+      "auth": {
+        "access_key": "olu",
+        "secret_key": "olu"
+      },
+      "requests": [
+        {
+          "auth": "aws_v2",
+          "method": "PUT",
+          "uri": "olb",
+          "query_string": "format=json&object-lock",
+          "data": {
+            "function": "data_ObjectLockConfiguration_GOVERNANCE_DAYS"
+          },
+          "out": {
+            "dump": {
+              "data": false
+            }
+          },
+          "response": {
+            "on_end": {
+              "function": "on_res_PUT_object_default_retention_governance_days"
+            }
+          }
+        },
+        {
+          "auth": "aws_v2",
+          "method": "GET",
+          "uri": "olb",
+          "query_string": "format=json&object-lock",
+          "response": {
+            "on_end": {
+              "function": "on_res_GET_object_default_retention_governance_days"
+            }
+          }
+        },
+        {
+          "auth": "aws_v4",
+          "method": "PUT",
+          "uri": "olb/test.1",
+          "query_string": "format=json",
+          "data": "test.1.ver.1",
+          "response": {
+            "on_end": {
+              "function": "on_res_check_code_200",
+              "args": [
+                "put-object-test.1.ver.1"
+              ]
+            }
+          }
+        },
+        {
+          "auth": "aws_v4",
+          "method": "GET",
+          "uri": "olb",
+          "query_string": "versions&encoding-type=url&objs-container=true&prefix=test.1&format=json",
+          "response": {
+            "on_end": {
+              "function": "on_res_GET_object_versions",
+              "args": [
+                "test.1"
+              ]
+            }
+          }
+        },
+        {
+          "auth": "aws_v4",
+          "method": "GET",
+          "uri": "olb/test.1",
+          "query_string": {
+            "function": "query_string_get_obj_retention",
+            "args": [
+              "test.1"
+            ]
+          }
+        },
+        {
+          "auth": "aws_v2",
+          "method": "PUT",
+          "uri": "olb",
+          "query_string": "format=json&object-lock",
+          "data": {
+            "function": "data_ObjectLockConfiguration_COMPLIANCE_YEARS"
+          },
+          "out": {
+            "dump": {
+              "data": false
+            }
+          },
+          "response": {
+            "on_end": {
+              "function": "on_res_PUT_object_default_retention_compliance_5_years"
+            }
+          }
+        },
+        {
+          "auth": "aws_v2",
+          "method": "GET",
+          "uri": "olb",
+          "query_string": "format=json&object-lock",
+          "response": {
+            "on_end": {
+              "function": "on_res_GET_object_default_retention_compliance_5_years"
+            }
+          }
+        },
+        {
+          "auth": "aws_v4",
+          "method": "PUT",
+          "uri": "olb/test.2",
+          "query_string": "format=json",
+          "data": "test.2.ver.1",
+          "response": {
+            "on_end": {
+              "function": "on_res_check_code_200",
+              "args": [
+                "put-object-test.2.ver.1"
+              ]
+            }
+          }
+        },
+        {
+          "auth": "aws_v4",
+          "method": "GET",
+          "uri": "olb",
+          "query_string": "versions&encoding-type=url&objs-container=true&prefix=test.2&format=json",
+          "response": {
+            "on_end": {
+              "function": "on_res_GET_object_versions",
+              "args": [
+                "test.2"
+              ]
+            }
+          }
+        },
+        {
+          "auth": "aws_v4",
+          "method": "GET",
+          "uri": "olb/test.2",
+          "query_string": {
+            "function": "query_string_get_obj_retention",
+            "args": [
+              "test.2"
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

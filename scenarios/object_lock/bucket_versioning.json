@@ -14,7 +14,7 @@
           "query_string": "versioning&format=json",
           "response": {
             "on_end": {
-              "function": "on_res_3_get_bucket_versioning"
+              "function": "on_res_GET_bucket_versioning"
             }
           }
         },
@@ -23,16 +23,20 @@
           "method": "PUT",
           "uri": "olb",
           "query_string": "versioning&format=json",
-          "data": "<VersioningConfiguration xmlns='http://s3.amazonaws.com/doc/2006-03-01/'><MfaDelete>Disabled</MfaDelete><Status>Enabled</Status></VersioningConfiguration>",
-          "out":{
-            "dump":{
-              "data":false
+          "data": {
+            "function": "data_ENABLE_bucket_versioning"
+          },
+          "out": {
+            "dump": {
+              "data": false
             }
           },
           "response": {
             "on_end": {
               "function": "on_res_check_code_200",
-              "args": ["set-bucket-versioning"]
+              "args": [
+                "set-bucket-versioning"
+              ]
             }
           }
         },
@@ -43,7 +47,7 @@
           "query_string": "versioning&format=json",
           "response": {
             "on_end": {
-              "function": "on_res_3_get_bucket_versioning"
+              "function": "on_res_GET_bucket_versioning"
             }
           }
         },
@@ -52,15 +56,17 @@
           "method": "PUT",
           "uri": "olb",
           "query_string": "versioning&format=json",
-          "data": "<VersioningConfiguration xmlns='http://s3.amazonaws.com/doc/2006-03-01/'><MfaDelete>Disabled</MfaDelete><Status>Suspended</Status></VersioningConfiguration>",
-          "out":{
-            "dump":{
-              "data":false
+          "data": {
+            "function": "data_SUSPEND_bucket_versioning"
+          },
+          "out": {
+            "dump": {
+              "data": false
             }
           },
           "response": {
             "on_end": {
-              "function": "on_res_3_put_bucket_versioning_suspend"
+              "function": "on_res_PUT_bucket_versioning_suspend"
             }
           }
         }

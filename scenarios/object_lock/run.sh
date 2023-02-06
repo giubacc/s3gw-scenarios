@@ -6,7 +6,7 @@ usage: $0 CMD
 
 commands
   all
-  no-0
+  nou
 EOF
 }
 
@@ -17,10 +17,9 @@ shift 1
   usage && exit 1
 
 
-if [[ "${cmd}" != "no-0" ]]; then
-chatterbox -n -f 0_admin_create_user.json             || exit 1
+if [[ "${cmd}" != "nou" ]]; then
+chatterbox -n -f admin_create_user.json                || exit 1
 fi
-chatterbox -n -f 1_ensure_bucket.json                 || exit 1
-chatterbox -n -f 2_bucket_configuration.json          || exit 1
-chatterbox -n -f 3_bucket_versioning.json             || exit 1
-chatterbox -n -f 4_object_default_retention.json      || exit 1
+chatterbox -n -f ensure_bucket.json                    || exit 1
+chatterbox -n -f bucket_versioning.json                || exit 1
+chatterbox -n -f bucket_object_default_retention.json  || exit 1
