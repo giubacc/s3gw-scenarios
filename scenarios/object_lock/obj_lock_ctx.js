@@ -10,42 +10,31 @@ let TLV = {
 
 var object_versions = [];
 
-function data_ObjectLockConfiguration_COMPLIANCE_YEARS() {
+function data_ObjectLockConfiguration(mode, amount, type) {
   return `<ObjectLockConfiguration>
   <ObjectLockEnabled>Enabled</ObjectLockEnabled>
     <Rule>
-      <DefaultRetention>
-        <Years>5</Years>
-        <Mode>COMPLIANCE</Mode>
+      <DefaultRetention>` +
+    ((type == "Years") ? `<Years>` + amount + `</Years>` : `<Days>` + amount + `</Days>`)
+    + `<Mode>` + mode + `</Mode>
       </DefaultRetention>
     </Rule>
   </ObjectLockConfiguration>`;
 }
 
-function data_ObjectLockConfiguration_GOVERNANCE_DAYS() {
-  return `<ObjectLockConfiguration>
-  <ObjectLockEnabled>Enabled</ObjectLockEnabled>
-    <Rule>
-      <DefaultRetention>
-        <Days>7</Days>
-        <Mode>GOVERNANCE</Mode>
-      </DefaultRetention>
-    </Rule>
-  </ObjectLockConfiguration>`;
-}
-
-function data_ENABLE_bucket_versioning() {
+function data_bucket_versioning(status) {
   return `<VersioningConfiguration xmlns='http://s3.amazonaws.com/doc/2006-03-01/'>
             <MfaDelete>Disabled</MfaDelete>
-            <Status>Enabled</Status>
+            <Status>` + status + `</Status>
           </VersioningConfiguration>`;
 }
 
-function data_SUSPEND_bucket_versioning() {
-  return `<VersioningConfiguration xmlns='http://s3.amazonaws.com/doc/2006-03-01/'>
-            <MfaDelete>Disabled</MfaDelete>
-            <Status>Suspended</Status>
-          </VersioningConfiguration>`;
+function query_string_get_obj_versions(objName) {
+  return "versions&encoding-type=url&objs-container=true&prefix=" + objName + "&format=json";
+}
+
+function query_string_get_obj_retention(objName) {
+  return "retention&versionId=" + object_versions[objName] + "&format=json";
 }
 
 function on_res_check_code_200(outCtxJson, req_name) {
@@ -57,26 +46,15 @@ function on_res_GET_object_lock(outCtxJson) {
   assert("get-object-lock: body.ObjectLockEnabled", outCtxJson.body.ObjectLockEnabled == "Enabled");
 }
 
-function on_res_PUT_object_default_retention_compliance_5_years(outCtxJson) {
-  assert("put-object-default-retention-compliance-5-years: code", outCtxJson.code == 200);
-}
-
-function on_res_GET_object_default_retention_compliance_5_years(outCtxJson) {
-  assert("get-object-default-retention-compliance-5-years: code", outCtxJson.code == 200);
-  assert("get-object-default-retention-compliance-5-years: body.ObjectLockEnabled", outCtxJson.body.ObjectLockEnabled == "Enabled");
-  assert("get-object-default-retention-compliance-5-years: body.Rule.DefaultRetention.Mode", outCtxJson.body.Rule.DefaultRetention.Mode == "COMPLIANCE");
-  assert("get-object-default-retention-compliance-5-years: body.Rule.DefaultRetention.Years", outCtxJson.body.Rule.DefaultRetention.Years == 5);
-}
-
-function on_res_PUT_object_default_retention_governance_days(outCtxJson) {
-  assert("put-object-default-retention-governance-1-day: code", outCtxJson.code == 200);
-}
-
-function on_res_GET_object_default_retention_governance_days(outCtxJson) {
-  assert("get-object-default-retention-governance-1-day: code", outCtxJson.code == 200);
-  assert("get-object-default-retention-governance-1-day: body.ObjectLockEnabled", outCtxJson.body.ObjectLockEnabled == "Enabled");
-  assert("get-object-default-retention-governance-1-day: body.Rule.DefaultRetention.Mode", outCtxJson.body.Rule.DefaultRetention.Mode == "GOVERNANCE");
-  assert("get-object-default-retention-governance-1-day: body.Rule.DefaultRetention.Days", outCtxJson.body.Rule.DefaultRetention.Days == 7);
+function on_res_GET_bucket_default_retention(outCtxJson, ObjectLockEnabled, Mode, amount, type) {
+  assert("get-bucket-default-retention: code", outCtxJson.code == 200);
+  assert("get-bucket-default-retention: body.ObjectLockEnabled", outCtxJson.body.ObjectLockEnabled == ObjectLockEnabled);
+  assert("get-bucket-default-retention: body.Rule.DefaultRetention.Mode", outCtxJson.body.Rule.DefaultRetention.Mode == Mode);
+  if (type == "Years") {
+    assert("get-bucket-default-retention: body.Rule.DefaultRetention.Years", outCtxJson.body.Rule.DefaultRetention.Years == amount);
+  } else {
+    assert("get-bucket-default-retention: body.Rule.DefaultRetention.Days", outCtxJson.body.Rule.DefaultRetention.Days == amount);
+  }
 }
 
 function on_res_GET_bucket_versioning(outCtxJson) {
@@ -97,6 +75,24 @@ function on_res_GET_object_versions(outCtxJson, objName) {
   object_versions[objName] = outCtxJson.body.Version.VersionId;
 }
 
-function query_string_get_obj_retention(outCtxJson, objName) {
-  return "retention&versionId=" + object_versions[objName] + "&format=json";
+function addDays(date, days) {
+  date.setDate(date.getDate() + days);
+  return date;
+}
+
+function on_res_GET_object_retention(outCtxJson, Mode, amount, type) {
+  const today = new Date();
+  const againstDate = addDays(today, (type == "Years" ? 365 * amount : amount));
+
+  assert("get-object-retention: code", outCtxJson.code == 200);
+  assert("get-object-retention: body.Mode", outCtxJson.body.Mode == Mode);
+
+  const checkDate = new Date(outCtxJson.body.RetainUntilDate);
+
+  log(TLV.DBG, "againstDate:", againstDate);
+  log(TLV.DBG, "checkDate:", checkDate);
+
+  assert("get-object-retention: YYYY", againstDate.getFullYear() == checkDate.getFullYear());
+  assert("get-object-retention: MM", againstDate.getMonth() == checkDate.getMonth());
+  assert("get-object-retention: DD", againstDate.getDate() == checkDate.getDate());
 }

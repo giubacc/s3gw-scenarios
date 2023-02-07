@@ -24,7 +24,8 @@
           "uri": "olb",
           "query_string": "versioning&format=json",
           "data": {
-            "function": "data_ENABLE_bucket_versioning"
+            "function": "data_bucket_versioning",
+            "args": ["Enabled"]
           },
           "out": {
             "dump": {
@@ -57,7 +58,8 @@
           "uri": "olb",
           "query_string": "versioning&format=json",
           "data": {
-            "function": "data_SUSPEND_bucket_versioning"
+            "function": "data_bucket_versioning",
+            "args": ["Suspended"]
           },
           "out": {
             "dump": {

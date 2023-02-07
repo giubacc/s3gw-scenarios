@@ -13,7 +13,12 @@
           "uri": "olb",
           "query_string": "format=json&object-lock",
           "data": {
-            "function": "data_ObjectLockConfiguration_GOVERNANCE_DAYS"
+            "function": "data_ObjectLockConfiguration",
+            "args": [
+              "GOVERNANCE",
+              7,
+              "Days"
+            ]
           },
           "out": {
             "dump": {
@@ -22,7 +27,10 @@
           },
           "response": {
             "on_end": {
-              "function": "on_res_PUT_object_default_retention_governance_days"
+              "function": "on_res_check_code_200",
+              "args": [
+                "put-GOVERNANCE-7-Days"
+              ]
             }
           }
         },
@@ -33,7 +41,13 @@
           "query_string": "format=json&object-lock",
           "response": {
             "on_end": {
-              "function": "on_res_GET_object_default_retention_governance_days"
+              "function": "on_res_GET_bucket_default_retention",
+              "args": [
+                "Enabled",
+                "GOVERNANCE",
+                7,
+                "Days"
+              ]
             }
           }
         },
@@ -56,7 +70,12 @@
           "auth": "aws_v4",
           "method": "GET",
           "uri": "olb",
-          "query_string": "versions&encoding-type=url&objs-container=true&prefix=test.1&format=json",
+          "query_string": {
+            "function": "query_string_get_obj_versions",
+            "args": [
+              "test.1"
+            ]
+          },
           "response": {
             "on_end": {
               "function": "on_res_GET_object_versions",
@@ -75,6 +94,16 @@
             "args": [
               "test.1"
             ]
+          },
+          "response": {
+            "on_end": {
+              "function": "on_res_GET_object_retention",
+              "args": [
+                "GOVERNANCE",
+                7,
+                "Days"
+              ]
+            }
           }
         },
         {
@@ -83,7 +112,12 @@
           "uri": "olb",
           "query_string": "format=json&object-lock",
           "data": {
-            "function": "data_ObjectLockConfiguration_COMPLIANCE_YEARS"
+            "function": "data_ObjectLockConfiguration",
+            "args": [
+              "COMPLIANCE",
+              5,
+              "Years"
+            ]
           },
           "out": {
             "dump": {
@@ -92,7 +126,10 @@
           },
           "response": {
             "on_end": {
-              "function": "on_res_PUT_object_default_retention_compliance_5_years"
+              "function": "on_res_check_code_200",
+              "args": [
+                "put-COMPLIANCE-5-Years"
+              ]
             }
           }
         },
@@ -103,7 +140,13 @@
           "query_string": "format=json&object-lock",
           "response": {
             "on_end": {
-              "function": "on_res_GET_object_default_retention_compliance_5_years"
+              "function": "on_res_GET_bucket_default_retention",
+              "args": [
+                "Enabled",
+                "COMPLIANCE",
+                5,
+                "Years"
+              ]
             }
           }
         },
@@ -126,7 +169,12 @@
           "auth": "aws_v4",
           "method": "GET",
           "uri": "olb",
-          "query_string": "versions&encoding-type=url&objs-container=true&prefix=test.2&format=json",
+          "query_string": {
+            "function": "query_string_get_obj_versions",
+            "args": [
+              "test.2"
+            ]
+          },
           "response": {
             "on_end": {
               "function": "on_res_GET_object_versions",
@@ -145,6 +193,16 @@
             "args": [
               "test.2"
             ]
+          },
+          "response": {
+            "on_end": {
+              "function": "on_res_GET_object_retention",
+              "args": [
+                "COMPLIANCE",
+                5,
+                "Years"
+              ]
+            }
           }
         }
       ]
