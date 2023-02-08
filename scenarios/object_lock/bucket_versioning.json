@@ -14,7 +14,12 @@
           "query_string": "versioning&format=json",
           "response": {
             "on_end": {
-              "function": "on_res_GET_bucket_versioning"
+              "function": "on_GET_bucket_versioning",
+              "args": [
+                "olb",
+                200,
+                "Enabled"
+              ]
             }
           }
         },
@@ -25,7 +30,9 @@
           "query_string": "versioning&format=json",
           "data": {
             "function": "data_bucket_versioning",
-            "args": ["Enabled"]
+            "args": [
+              "Enabled"
+            ]
           },
           "out": {
             "dump": {
@@ -34,7 +41,7 @@
           },
           "response": {
             "on_end": {
-              "function": "on_res_check_code_200",
+              "function": "on_RES_code_200",
               "args": [
                 "set-bucket-versioning"
               ]
@@ -48,7 +55,12 @@
           "query_string": "versioning&format=json",
           "response": {
             "on_end": {
-              "function": "on_res_GET_bucket_versioning"
+              "function": "on_GET_bucket_versioning",
+              "args": [
+                "olb",
+                200,
+                "Enabled"
+              ]
             }
           }
         },
@@ -59,7 +71,9 @@
           "query_string": "versioning&format=json",
           "data": {
             "function": "data_bucket_versioning",
-            "args": ["Suspended"]
+            "args": [
+              "Suspended"
+            ]
           },
           "out": {
             "dump": {
@@ -68,7 +82,13 @@
           },
           "response": {
             "on_end": {
-              "function": "on_res_PUT_bucket_versioning_suspend"
+              "function": "on_PUT_bucket_versioning",
+              "args": [
+                "SUSPENDED-deny",
+                409,
+                "InvalidBucketState",
+                "bucket versioning cannot be disabled on buckets with object lock enabled"
+              ]
             }
           }
         }

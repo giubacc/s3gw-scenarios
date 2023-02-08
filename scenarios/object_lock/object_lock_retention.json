@@ -1,0 +1,99 @@
+{
+  "conversations": [
+    {
+      "host": "localhost:7480",
+      "auth": {
+        "access_key": "olu",
+        "secret_key": "olu"
+      },
+      "requests": [
+        {
+          "auth": "aws_v4",
+          "method": "PUT",
+          "header": {
+            "x-amz-object-lock-mode": "GOVERNANCE",
+            "x-amz-object-lock-retain-until-date": "2024-07-07T13:40:15.949000000Z"
+          },
+          "uri": "olb/test.3",
+          "query_string": "format=json",
+          "data": "test.3.ver.1",
+          "response": {
+            "on_end": {
+              "function": "on_RES_code_200",
+              "args": [
+                "put-object-test.3.ver.1"
+              ]
+            }
+          }
+        },
+        {
+          "auth": "aws_v4",
+          "method": "GET",
+          "uri": "olb",
+          "query_string": {
+            "function": "query_string_get_obj_versions",
+            "args": [
+              "test.3"
+            ]
+          },
+          "response": {
+            "on_end": {
+              "function": "on_GET_object_versions",
+              "args": [
+                "test.3.1",
+                200,
+                true,
+                "test.3.1"
+              ]
+            }
+          }
+        },
+        {
+          "auth": "aws_v4",
+          "method": "GET",
+          "uri": "olb/test.3",
+          "query_string": {
+            "function": "query_string_get_versioned_obj_request",
+            "args": [
+              "test.3.1",
+              "retention"
+            ]
+          },
+          "response": {
+            "on_end": {
+              "function": "on_GET_object_retention_TS",
+              "args": [
+                "test.3.1",
+                200,
+                "GOVERNANCE",
+                "2024-07-07T13:40:15.949000000Z"
+              ]
+            }
+          }
+        },
+        {
+          "auth": "aws_v4",
+          "method": "DELETE",
+          "uri": "olb/test.3",
+          "query_string": {
+            "function": "query_string_get_versioned_obj_request",
+            "args": [
+              "test.3.1"
+            ]
+          },
+          "response": {
+            "on_end": {
+              "function": "on_DELETE_object",
+              "args": [
+                "GOVERNANCE-deny",
+                403,
+                "AccessDenied",
+                "forbidden by object lock"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

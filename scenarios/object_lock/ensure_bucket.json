@@ -23,7 +23,7 @@
           "query_string": "format=json",
           "response": {
             "on_end": {
-              "function": "on_res_check_code_200",
+              "function": "on_RES_code_200",
               "args": [
                 "create-bucket"
               ]
@@ -37,7 +37,12 @@
           "query_string": "format=json&object-lock",
           "response": {
             "on_end": {
-              "function": "on_res_GET_object_lock"
+              "function": "on_GET_bucket_object_lock",
+              "args": [
+                "olb",
+                200,
+                "Enabled"
+              ]
             }
           }
         }
