@@ -23,4 +23,5 @@ fi
 chatterbox -n -f ensure_bucket.json                             || exit 1
 chatterbox -n -f bucket_versioning.json                         || exit 1
 chatterbox -n -f bucket_object_lock_default_configuration.json  || exit 1
-chatterbox -n -f object_lock_retention.json                     || exit 1
+chatterbox -n -f object_lock_retention_governance.json          || exit 1
+chatterbox -n -f object_lock_retention_compliance.json          || exit 1

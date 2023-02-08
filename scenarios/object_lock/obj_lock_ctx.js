@@ -112,6 +112,16 @@ function on_GET_object_retention_TS(outCtxJson, ctxTest, expCode, expBodyMode, e
 
 function on_DELETE_object(outCtxJson, ctxTest, expCode, expBodyCode, expBodyMessage) {
   assert("delete-object@" + ctxTest + ": code", outCtxJson.code == expCode);
-  assert("delete-object@" + ctxTest + ": body.Code", outCtxJson.body.Code == expBodyCode);
-  assert("delete-object@" + ctxTest + ": body.Message", outCtxJson.body.Message == expBodyMessage);
+  if (expBodyCode !== undefined)
+    assert("delete-object@" + ctxTest + ": body.Code", outCtxJson.body.Code == expBodyCode);
+  if (expBodyMessage !== undefined)
+    assert("delete-object@" + ctxTest + ": body.Message", outCtxJson.body.Message == expBodyMessage);
+}
+
+function on_PUT_object_retention(outCtxJson, ctxTest, expCode, expBodyCode, expBodyMessage) {
+  assert("put-object-retention@" + ctxTest + ": code", outCtxJson.code == expCode);
+  if (expBodyCode !== undefined)
+    assert("put-object-retention@" + ctxTest + ": body.Code", outCtxJson.body.Code == expBodyCode);
+  if (expBodyMessage !== undefined)
+    assert("put-object-retention@" + ctxTest + ": body.Message", outCtxJson.body.Message == expBodyMessage);
 }
