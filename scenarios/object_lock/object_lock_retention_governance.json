@@ -10,7 +10,7 @@
         {
           "auth": "aws_v4",
           "method": "PUT",
-          "header": {
+          "headers": {
             "x-amz-object-lock-mode": "GOVERNANCE",
             "x-amz-object-lock-retain-until-date": "2024-07-07T13:40:15.949000000Z"
           },
@@ -154,7 +154,7 @@
         {
           "auth": "aws_v4",
           "method": "DELETE",
-          "header": {
+          "headers": {
             "x-amz-bypass-governance-retention": "true"
           },
           "uri": "olb/test.3",
