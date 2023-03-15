@@ -18,10 +18,10 @@ shift 1
 
 
 if [[ "${cmd}" != "nou" ]]; then
-chatterbox -n -f admin_create_user.json                         || exit 1
+chatterbox -n -f admin_create_user.yaml                         || exit 1
 fi
-chatterbox -n -f ensure_bucket.json                             || exit 1
-chatterbox -n -f bucket_versioning.json                         || exit 1
-chatterbox -n -f bucket_object_lock_default_configuration.json  || exit 1
+chatterbox -n -f ensure_bucket.yaml                             || exit 1
+chatterbox -n -f bucket_versioning.yaml                         || exit 1
+chatterbox -n -f bucket_object_lock_default_configuration.yaml  || exit 1
 chatterbox -n -f object_lock_retention_governance.json          || exit 1
-chatterbox -n -f object_lock_retention_compliance.json          || exit 1
+chatterbox -n -f object_lock_retention_compliance.yaml          || exit 1

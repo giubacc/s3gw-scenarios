@@ -1,0 +1,136 @@
+conversations:
+  - auth:
+      accessKey: olu
+      secretKey: olu
+    host: localhost:7480
+    requests:
+      - response:
+          did:
+            function: on_RES_code_200
+            args:
+              - put-GOVERNANCE-7-Days
+        method: PUT
+        uri: olb
+        queryString: format=json&object-lock
+        auth: aws_v2
+        data:
+          function: data_ObjectLockConfiguration
+          args: [GOVERNANCE, 7, Days]
+      - response:
+          did:
+            function: on_GET_bucket_default_retention
+            args:
+              - olb
+              - 200
+              - Enabled
+              - GOVERNANCE
+              - 7
+              - Days
+        method: GET
+        uri: olb
+        queryString: format=json&object-lock
+        auth: aws_v2
+      - response:
+          did:
+            function: on_RES_code_200
+            args:
+              - put-object-test.1.ver.1
+        method: PUT
+        uri: olb/test.1
+        queryString: format=json
+        data: test.1.ver.1
+        auth: aws_v4
+      - response:
+          did:
+            function: on_GET_object_versions
+            args:
+              - test.1
+              - 200
+              - true
+              - test.1
+        method: GET
+        auth: aws_v4
+        uri: olb
+        queryString:
+          function: queryString_get_obj_versions
+          args: [test.1]
+      - response:
+          did:
+            function: on_GET_object_retention
+            args:
+              - test.1
+              - 200
+              - GOVERNANCE
+              - 7
+              - Days
+        method: GET
+        auth: aws_v4
+        uri: olb/test.1
+        queryString:
+          function: queryString_get_versioned_obj_request
+          args: [test.1, retention]
+      - response:
+          did:
+            function: on_RES_code_200
+            args:
+              - put-COMPLIANCE-5-Years
+        method: PUT
+        uri: olb
+        queryString: format=json&object-lock
+        data:
+          function: data_ObjectLockConfiguration
+          args: [COMPLIANCE, 5, Years]
+        auth: aws_v2
+      - response:
+          did:
+            function: on_GET_bucket_default_retention
+            args:
+              - olb
+              - 200
+              - Enabled
+              - COMPLIANCE
+              - 5
+              - Years
+        method: GET
+        uri: olb
+        queryString: format=json&object-lock
+        auth: aws_v2
+      - response:
+          did:
+            function: on_RES_code_200
+            args:
+              - put-object-test.2.ver.1
+        method: PUT
+        uri: olb/test.2
+        queryString: format=json
+        data: test.2.ver.1
+        auth: aws_v4
+      - response:
+          did:
+            function: on_GET_object_versions
+            args:
+              - test.2
+              - 200
+              - true
+              - test.2
+        method: GET
+        uri: olb
+        queryString:
+          function: queryString_get_obj_versions
+          args: [test.2]
+        auth: aws_v4
+      - response:
+          did:
+            function: on_GET_object_retention
+            args:
+              - test.2
+              - 200
+              - COMPLIANCE
+              - 5
+              - Years
+        method: GET
+        auth: aws_v4
+        uri: olb/test.2
+        queryString:
+          function: queryString_get_versioned_obj_request
+          args: [test.2, retention]

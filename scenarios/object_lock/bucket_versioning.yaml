@@ -1,0 +1,55 @@
+conversations:
+  - auth:
+      accessKey: olu
+      secretKey: olu
+    host: localhost:7480
+    requests:
+      - response:
+          did:
+            function: on_GET_bucket_versioning
+            args:
+              - olb
+              - 200
+              - Enabled
+        method: GET
+        auth: aws_v4
+        uri: olb
+        queryString: versioning&format=json
+      - response:
+          did:
+            function: on_RES_code_200
+            args:
+              - set-bucket-versioning
+        method: PUT
+        auth: aws_v4
+        uri: olb
+        queryString: versioning&format=json
+        data:
+          function: data_bucket_versioning
+          args: [Enabled]
+      - response:
+          did:
+            function: on_GET_bucket_versioning
+            args:
+              - olb
+              - 200
+              - Enabled
+        method: GET
+        auth: aws_v4
+        uri: olb
+        queryString: versioning&format=json
+      - response:
+          did:
+            function: on_PUT_bucket_versioning
+            args:
+              - SUSPENDED-deny
+              - 409
+              - InvalidBucketState
+              - bucket versioning cannot be disabled on buckets with object lock enabled
+        method: PUT
+        auth: aws_v4
+        uri: olb
+        queryString: versioning&format=json
+        data:
+          function: data_bucket_versioning
+          args: [Suspended]

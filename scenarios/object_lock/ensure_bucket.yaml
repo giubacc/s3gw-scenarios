@@ -1,0 +1,32 @@
+conversations:
+  - host: localhost:7480
+    auth:
+      accessKey: olu
+      secretKey: olu
+    requests:
+      - method: DELETE
+        auth: aws_v4
+        uri: olb
+        queryString: format=json
+      - headers:
+          x-amz-bucket-object-lock-enabled: true
+        method: PUT
+        auth: aws_v4
+        uri: olb
+        queryString: format=json
+        response:
+          did:
+            function: on_RES_code_200
+            args:
+              - create-bucket
+      - method: GET
+        auth: aws_v2
+        uri: olb
+        queryString: format=json&object-lock
+        response:
+          did:
+            function: on_GET_bucket_object_lock
+            args:
+              - olb
+              - 200
+              - Enabled

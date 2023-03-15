@@ -1,0 +1,107 @@
+conversations:
+  - auth:
+      accessKey: olu
+      secretKey: olu
+    host: localhost:7480
+    requests:
+      - headers:
+          x-amz-object-lock-mode: GOVERNANCE
+          x-amz-object-lock-retain-until-date: "2024-07-07T13:40:15.949000000Z"
+        response:
+          did:
+            function: on_RES_code_200
+            args:
+              - put-object-test.3.ver.1
+        method: PUT
+        uri: olb/test.3
+        queryString: format=json
+        data: test.3.ver.1
+        auth: aws_v4
+      - response:
+          did:
+            function: on_GET_object_versions
+            args:
+              - test.3.1
+              - 200
+              - true
+              - test.3.1
+        method: GET
+        uri: olb
+        queryString:
+          function: queryString_get_obj_versions
+          args: [test.3]
+        auth: aws_v4
+      - response:
+          did:
+            function: on_GET_object_retention_TS
+            args:
+              - test.3.1
+              - 200
+              - GOVERNANCE
+              - "2024-07-07T13:40:15.949000000Z"
+        method: GET
+        uri: olb/test.3
+        queryString:
+          function: queryString_get_versioned_obj_request
+          args: [test.3.1, retention]
+        auth: aws_v4
+      - response:
+          did:
+            function: on_DELETE_object
+            args:
+              - GOVERNANCE-deny
+              - 403
+              - AccessDenied
+              - forbidden by object lock
+        method: DELETE
+        uri: olb/test.3
+        queryString:
+          function: queryString_get_versioned_obj_request
+          args: [test.3.1]
+        auth: aws_v4
+      - response:
+          did:
+            function: on_PUT_object_retention
+            args:
+              - GOVERNANCE-shorten-deny
+              - 403
+              - AccessDenied
+              - proposed retain-until date shortens an existing retention period and governance bypass check failed
+        method: PUT
+        uri: olb/test.3
+        queryString:
+          function: queryString_get_versioned_obj_request
+          args: [test.3.1, retention]
+        data:
+          function: data_object_retention
+          args: [GOVERNANCE, "2024-06-07T13:40:15.949000000Z"]
+        auth: aws_v4
+      - response:
+          did:
+            function: on_PUT_object_retention
+            args:
+              - GOVERNANCE-widen-allow
+              - 200
+        method: PUT
+        uri: olb/test.3
+        queryString:
+          function: queryString_get_versioned_obj_request
+          args: [test.3.1, retention]
+        data:
+          function: data_object_retention
+          args: [GOVERNANCE, "2024-07-07T13:40:15.949000000Z"]
+        auth: aws_v4
+      - headers:
+          x-amz-bypass-governance-retention: true
+        response:
+          did:
+            function: on_DELETE_object
+            args:
+              - GOVERNANCE-bypass-allow
+              - 204
+        method: DELETE
+        uri: olb/test.3
+        queryString:
+          function: queryString_get_versioned_obj_request
+          args: [test.3.1]
+        auth: aws_v4
