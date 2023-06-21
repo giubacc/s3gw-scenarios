@@ -5,7 +5,7 @@ conversations:
     host: localhost:7480
     requests:
       - response:
-          did:
+          after:
             function: on_RES_code_200
             args:
               - put-GOVERNANCE-7-Days
@@ -17,7 +17,7 @@ conversations:
           function: data_ObjectLockConfiguration
           args: [GOVERNANCE, 7, Days]
       - response:
-          did:
+          after:
             function: on_GET_bucket_default_retention
             args:
               - olb
@@ -31,7 +31,7 @@ conversations:
         queryString: format=json&object-lock
         auth: aws_v2
       - response:
-          did:
+          after:
             function: on_RES_code_200
             args:
               - put-object-test.1.ver.1
@@ -41,7 +41,7 @@ conversations:
         data: test.1.ver.1
         auth: aws_v4
       - response:
-          did:
+          after:
             function: on_GET_object_versions
             args:
               - test.1
@@ -55,7 +55,7 @@ conversations:
           function: queryString_get_obj_versions
           args: [test.1]
       - response:
-          did:
+          after:
             function: on_GET_object_retention
             args:
               - test.1
@@ -70,7 +70,7 @@ conversations:
           function: queryString_get_versioned_obj_request
           args: [test.1, retention]
       - response:
-          did:
+          after:
             function: on_RES_code_200
             args:
               - put-COMPLIANCE-5-Years
@@ -82,7 +82,7 @@ conversations:
           args: [COMPLIANCE, 5, Years]
         auth: aws_v2
       - response:
-          did:
+          after:
             function: on_GET_bucket_default_retention
             args:
               - olb
@@ -96,7 +96,7 @@ conversations:
         queryString: format=json&object-lock
         auth: aws_v2
       - response:
-          did:
+          after:
             function: on_RES_code_200
             args:
               - put-object-test.2.ver.1
@@ -106,7 +106,7 @@ conversations:
         data: test.2.ver.1
         auth: aws_v4
       - response:
-          did:
+          after:
             function: on_GET_object_versions
             args:
               - test.2
@@ -120,7 +120,7 @@ conversations:
           args: [test.2]
         auth: aws_v4
       - response:
-          did:
+          after:
             function: on_GET_object_retention
             args:
               - test.2

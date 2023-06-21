@@ -5,7 +5,7 @@ conversations:
     host: localhost:7480
     requests:
       - response:
-          did:
+          after:
             function: on_GET_bucket_versioning
             args:
               - olb
@@ -16,7 +16,7 @@ conversations:
         uri: olb
         queryString: versioning&format=json
       - response:
-          did:
+          after:
             function: on_RES_code_200
             args:
               - set-bucket-versioning
@@ -28,7 +28,7 @@ conversations:
           function: data_bucket_versioning
           args: [Enabled]
       - response:
-          did:
+          after:
             function: on_GET_bucket_versioning
             args:
               - olb
@@ -39,7 +39,7 @@ conversations:
         uri: olb
         queryString: versioning&format=json
       - response:
-          did:
+          after:
             function: on_PUT_bucket_versioning
             args:
               - SUSPENDED-deny

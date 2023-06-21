@@ -9,6 +9,6 @@ conversations:
         uri: admin/user
         queryString: "format=json&uid=olu&display-name=olu&access-key=olu&secret-key=olu"
         response:
-          did:
+          after:
             function: on_RES_code_200
             args: [create-user]

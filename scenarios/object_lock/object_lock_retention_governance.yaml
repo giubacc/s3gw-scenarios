@@ -8,7 +8,7 @@ conversations:
           x-amz-object-lock-mode: GOVERNANCE
           x-amz-object-lock-retain-until-date: "2024-07-07T13:40:15.949000000Z"
         response:
-          did:
+          after:
             function: on_RES_code_200
             args:
               - put-object-test.3.ver.1
@@ -18,7 +18,7 @@ conversations:
         data: test.3.ver.1
         auth: aws_v4
       - response:
-          did:
+          after:
             function: on_GET_object_versions
             args:
               - test.3.1
@@ -32,7 +32,7 @@ conversations:
           args: [test.3]
         auth: aws_v4
       - response:
-          did:
+          after:
             function: on_GET_object_retention_TS
             args:
               - test.3.1
@@ -46,7 +46,7 @@ conversations:
           args: [test.3.1, retention]
         auth: aws_v4
       - response:
-          did:
+          after:
             function: on_DELETE_object
             args:
               - GOVERNANCE-deny
@@ -60,7 +60,7 @@ conversations:
           args: [test.3.1]
         auth: aws_v4
       - response:
-          did:
+          after:
             function: on_PUT_object_retention
             args:
               - GOVERNANCE-shorten-deny
@@ -77,7 +77,7 @@ conversations:
           args: [GOVERNANCE, "2024-06-07T13:40:15.949000000Z"]
         auth: aws_v4
       - response:
-          did:
+          after:
             function: on_PUT_object_retention
             args:
               - GOVERNANCE-widen-allow
@@ -94,7 +94,7 @@ conversations:
       - headers:
           x-amz-bypass-governance-retention: true
         response:
-          did:
+          after:
             function: on_DELETE_object
             args:
               - GOVERNANCE-bypass-allow

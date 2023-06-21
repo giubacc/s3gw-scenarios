@@ -8,7 +8,7 @@ conversations:
           x-amz-object-lock-mode: COMPLIANCE
           x-amz-object-lock-retain-until-date: "2024-07-07T13:40:15.949000000Z"
         response:
-          did:
+          after:
             function: on_RES_code_200
             args:
               - put-object-test.4.ver.1
@@ -18,7 +18,7 @@ conversations:
         data: test.4.ver.1
         auth: aws_v4
       - response:
-          did:
+          after:
             function: on_GET_object_versions
             args:
               - test.4.1
@@ -32,7 +32,7 @@ conversations:
           args: [test.4]
         auth: aws_v4
       - response:
-          did:
+          after:
             function: on_GET_object_retention_TS
             args:
               - test.4.1
@@ -46,7 +46,7 @@ conversations:
           args: [test.4.1, retention]
         auth: aws_v4
       - response:
-          did:
+          after:
             function: on_DELETE_object
             args:
               - COMPLIANCE-deny

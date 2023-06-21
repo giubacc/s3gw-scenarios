@@ -15,7 +15,7 @@ conversations:
         uri: olb
         queryString: format=json
         response:
-          did:
+          after:
             function: on_RES_code_200
             args:
               - create-bucket
@@ -24,7 +24,7 @@ conversations:
         uri: olb
         queryString: format=json&object-lock
         response:
-          did:
+          after:
             function: on_GET_bucket_object_lock
             args:
               - olb
